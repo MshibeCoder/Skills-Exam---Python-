@@ -1,0 +1,19 @@
+---
+- hosts: webservers  
+
+  tasks:
+    - name: Create Dockerfile
+      copy:
+        dest: "/home/devasc/s227234340/Dockerfile"
+        content: |
+          FROM httpd:alpine
+          COPY ./index.html /usr/local/apache2/htdocs/
+          EXPOSE 80
+          CMD ["httpd-foreground"]
+        mode: '0644'
+
+    - name: Build Dockerfile
+      command: docker build -t website /home/devasc/s227234340
+
+    - name: Run Dockerfile 
+      command: docker run -t -d -p 8080:80 --name image website       
